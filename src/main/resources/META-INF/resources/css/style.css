@@ -1,0 +1,14 @@
+.ui-panel {
+    overflow: hidden!important;
+}
+
+.ui-progressbar	{
+    height: 1.5em!important;
+}
+.ui-progressbar-value {
+    margin: 0!important;
+
+}
+.ui-progressbar-label {
+
+}

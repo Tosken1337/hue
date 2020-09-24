@@ -2,18 +2,56 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 template="/templates/template.xhtml">
 
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:viewAction action="#{indexPage.onInit}" />
+        </f:metadata>
+    </ui:define>
+
+
     <ui:define name="title">
-        A page title
+        Job List
     </ui:define>
 
     <ui:define name="description">
-        A page description
     </ui:define>
 
     <ui:define name="body">
-        <h2>Page body</h2>
+        <h:form styleClass="ui-fluid">
+            <p:poll interval="1" update="jobTable" global="false"/>
+            <p:panel styleClass="card panel-primary">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <p:dataTable id="jobTable" value="#{indexPage.jobs}" var="job" style="margin-bottom: 12px">
+                            <p:column headerText="Name">
+                                #{job.name}
+                            </p:column>
+                            <p:column>
+                                <p:progressBar interval="1000" widgetVar="pbAjax" ajax="false" value="#{job.progress}"
+                                               labelTemplate="{value}%" styleClass="animated" global="false">
+                                </p:progressBar>
+                            </p:column>
+                            <p:column headerText="Complete">
+                                #{job.complete}
+                            </p:column>
+                        </p:dataTable>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3 col-xs-offset-9">
+                        <p:commandButton value="Submit Job" process="@this" update="jobTable" styleClass="btn btn-success"
+                                         actionListener="#{indexPage.addJob}"
+                                         oncomplete="PF('pbAjax').start();"/>
+                    </div>
+                </div>
+
+            </p:panel>
+        </h:form>
     </ui:define>
 
 </ui:composition>
