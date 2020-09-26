@@ -7,6 +7,9 @@ import de.tosken.proc.service.UserService;
 import de.tosken.proc.service.job.DummyJob;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -32,6 +35,12 @@ public class IndexPage {
     }
 
     public void onInit() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.getPrincipal() instanceof DefaultOidcUser) {
+            final String email = ((DefaultOidcUser) authentication.getPrincipal()).getEmail();
+            System.out.println(email);
+        }
+
         final List<User> users = userService.getAllUsers();
         users.forEach(System.out::println);
     }
